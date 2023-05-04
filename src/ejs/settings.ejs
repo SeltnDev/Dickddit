@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+<body>
+  <div class="header fixed-top">
+    <div class="container-fluid">
+      <div class="row justify-content-end">
+        <div class="col logo">
+          <a href="/" class="logo-link"><%= config.title %></a>
+        </div>
+        <%- include("./parts/header.ejs") %>
+        <div class="col text-end">
+          <a href="/settings" class="logo-link icons" target="_blank"><i class="fa-solid fa-gear"></i>
+        </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container index">
+        <div class="row justify-content-center">
+          <div class="col-lg-7">
+            <h6>Change Settings</h6>
+            <hr>
+            <form action="/settings" method="post">
+              <input type="text" class="search mb-2" placeholder="Change site title" name="change_title" value="<%= config.title %>">
+              <textarea class="search mb-2" placeholder="Change site description" name="change_description" rows="3"><%= config.description %></textarea>
+              <input type="password" class="search mb-2" placeholder="Change site password" name="change_password">
+              <input type="password" class="search mb-2" placeholder="Site Password" name="password">
+              <button class="button" type="submit">Change Settings</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

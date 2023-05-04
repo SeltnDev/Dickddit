@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+  <div class="header fixed-top">
+    <div class="container-fluid">
+      <div class="row justify-content-center">
+        <div class="col logo">
+          <a href="/" class="logo-link"><%= title %></a> - <a href="/<%= about.data.display_name_prefixed %>" class="logo-link"><%= about.data.display_name_prefixed %></a>  
+        </div>
+        <%- include("./parts/header.ejs") %>
+        <% about_post[0].data.children.forEach(x => { %>
+          <div class="col text-end">
+            <a href="https://reddit.com<%= x.data.permalink %>" class="logo-link icons" target="_blank"><i class="fa-brands fa-reddit"></i></a>
+            <a href="/settings" class="logo-link icons" target="_blank"><i class="fa-solid fa-gear"></i></a>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+  </div>
+  <div class="subreddit">
+    <% if(about.data.banner_background_image){ %>
+      <div class="subreddit-banner" style='background-image: url("<%= about.data.banner_background_image.split(`?`)[0] %>"); background-position: center; background-repeat: no-repeat; background-size: cover;'></div>  
+    <% }else{ %>
+      <div class="subreddit-banner" style='background-image: url("/img/banner.jpg"); background-position: center; background-repeat: no-repeat; background-size: cover;'></div>  
+    <% } %>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-11">
+          <div class="row">
+            <div class="col-lg-1">
+              <% if(about.data.community_icon){ %>
+                <img src="<%= about.data.community_icon.split('?')[0] %>" class="subreddit-icon-banner mt-2 mb-2">  
+              <% }else{ %>
+                <img src="/img/subreddit.png" class="subreddit-icon-banner mt-2 mb-2">  
+              <% } %>
+            </div>
+            <div class="col mt-3">
+              <h4><%= about.data.title %></h4>
+              <p><%= about.data.display_name_prefixed %></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container mt-5">
+        <div class="row justify-content-center">
+          <div class="col-lg-7">
+            <% response[0].data.children.forEach(x => { %>
+              <div class="card">
+                <div class="card-body">
+                  <h6 class="mb-3"><a href="/r/<%= x.data.subreddit_name_prefixed %>" class="logo-link"><%= x.data.subreddit_name_prefixed %></a> - <a href="https://www.reddit.com/user/<%= x.data.author %>" class="logo-link" target="_blank"><%= x.data.author %></a></h6>
+                  <p class="post-title"><%= x.data.title %></p>
+                  <% if(x.data.selftext){ %>
+                    <p class="mt-2"><%- marked(x.data.selftext) %></p>
+                  <% } %>
+              <% if(x.data.url){ %>
+                <% if(x.data.url.endsWith("jpg") || x.data.url.endsWith("jpeg") || x.data.url.endsWith("png")){ %>
+                  <img src="<%= x.data.url_overridden_by_dest %>" class="img mt-3">  
+                <% } %>
+                <% } %>
+                
+              <% if(x.data.media){ %>
+                <% if(x.data.media.reddit_video){ %>
+                  <video class="img mt-3" controls>
+                    <source src="<%= x.data.media.reddit_video.fallback_url %>" type="video/mp4">
+                  </video>
+                <% } %>
+            <% } %>
+                <p class="mt-3"><i class="fa-solid fa-chevron-up"></i> <%= x.data.ups %></p>
+                </div>
+              </div>
+          <% }) %>  
+          <div class="comments mt-3">
+            <h6>Comments - <%= response[1].data.children.length %></h6>
+            <hr>
+            // Up to 35 comments can be listed.
+              <% if(response[1].data.children.length == 0){ %>
+                <p>There are no comments.</p>
+              <% }else{ %>
+                <% response[1].data.children.slice(0, 35).forEach(x => { %>
+                    <div class="card mt-3">
+                      <div class="card-body">
+                        <p>
+                          <p><a href="https://www.reddit.com/user/<%= x.data.author %>" class="link" target="_blank"><%= x.data.author %></a></p>
+                          <%- marked(x.data.body) %>
+                        </p>
+                        <p class="mt-3"><i class="fa-solid fa-chevron-up"></i> <%= x.data.ups %></p>
+                      </div>
+                    </div>
+                <% }) %>
+              <% } %>
+          </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="card">
+              <div class="card-body">
+                <p class="mb-2"><strong>About Community</strong></p>
+                <p>
+                  <%- marked(about.data.public_description) %>
+                </p>
+                <div class="row mt-2">
+                  <div class="col">
+                    <p><strong>Members</strong></p>
+                    <p>
+                      <%= about.data.subscribers %>
+                    </p>
+                  </div>
+                  <div class="col">
+                    <p><strong>Online</strong></p>
+                    <p>
+                      <%= about.data.active_user_count %>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <% if(rules.rules.length > 0){ %>
+              <div class="card mt-2">
+                <div class="card-body">
+                  <p class="mb-2"><strong>Community Rules</strong></p>
+                  <% rules.rules.forEach(rule => { %>
+                    <strong><a class="logo-link" type="button" data-bs-toggle="collapse" data-bs-target="#id<%= rule.priority %>" aria-expanded="false" aria-controls="<%= rules.created_utc %>"><%= rule.priority + 1 %>. <%= rule.short_name %> </a></strong>
+                    <div class="row">
+                      <div class="col">
+                        <div class="collapse multi-collapse" id="id<%= rule.priority %>">
+                          <p class="mt-2"><%- marked(rule.description) %></p>
+                        </div>
+                      </div>
+                    </div>
+                    <hr>
+                  <% }) %>
+                </div>
+              </div>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

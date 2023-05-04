@@ -1,0 +1,140 @@
+body{
+    background-color: #1e1e2b;
+    color: #b6b6b6;
+    font: 100;
+    margin-bottom: 25px;
+}
+.index-1{
+    margin-top: 200px;
+}
+.search{
+    outline: none;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #2e2e3b;
+    color: #b6b6b6;
+}
+.title{
+    font-size: 50px;
+}
+.header{
+    background-color: #1e1e2b;
+    padding: 10px;
+    border-bottom: 1px solid #2e2e3b;
+}
+.logo{
+    font-size: 17px;
+    margin-top: 10px;
+}
+.logo-link{
+    color: #b6b6b6;
+    text-decoration-line: none;
+}
+.logo-link:hover{
+    color: #b6b6b6;
+    text-decoration-line: none;
+}
+.logo-:focus{
+    color: #b6b6b6;
+    text-decoration-line: none;
+}
+.link{
+    color: #e7e7e7;
+    text-decoration-line: none;
+}
+.link:hover{
+    color: #e7e7e7;
+    text-decoration-line: underline;
+}
+.link:focus{
+    color: #e7e7e7;
+    text-decoration-line: underline;
+}
+p{
+    margin: 0px;
+}
+.link-text{
+    color: #4ec274;
+}
+.poster{
+    width: 100%;
+}
+.card{
+    border: none;
+    background-color: #2e2e3b;
+}
+.img{
+    width: 100%;
+    border-radius: 5px;
+}
+.post-title{
+    color: #e7e7e7;
+}
+.index{
+    margin-top: 100px;
+}
+.icons{
+    font-size: 30px;
+}
+.button{
+    background-color: #2e2e3b;
+    color: #b6b6b6;
+    text-decoration-line: none;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+}
+.button:hover{
+    background-color: #2e2e3b;
+    color: #b6b6b6;
+    text-decoration-line: none;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+}
+.button:focus{
+    background-color: #2e2e3b;
+    color: #b6b6b6;
+    text-decoration-line: none;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+}
+table{
+    width: 100%;
+    border: 1px solid #b6b6b6;
+    border-radius: 5px;
+}
+tr{
+    border: 1px solid #b6b6b6;
+}
+td{
+    padding: 10px;
+    border: 1px solid #2e2e3b;
+}
+.about{
+    margin-top: 40px;
+}
+.subreddit-icon{
+    width: 130px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 1000px;
+    border: 5px solid #b6b6b6;
+}
+.subreddit{
+    margin-top: 65px;
+    background-color: #2e2e3b;
+}
+.subreddit-banner{
+    width: 100%;
+    height: 270px;
+}
+.subreddit-icon-banner{
+    width: 80px;
+    border-radius: 1000px;
+    border: 5px solid #b6b6b6;
+}
