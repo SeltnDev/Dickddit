@@ -11,7 +11,7 @@ Dickddit is an open source software that uses a reddit api written in NodeJS. Wi
  6. ExpressJS
  7. Wio.DB
 
-## How to install Dickdit?
+## How to install Dickddit?
     $ git clone https://github.com/SeltnDev/Dickddit
     $ npm install
     $ node .
