@@ -56,8 +56,14 @@
                 <div class="card-body">
                   <h6 class="mb-3"><a href="/r/<%= x.data.subreddit_name_prefixed %>" class="logo-link"><%= x.data.subreddit_name_prefixed %></a> - <a href="https://www.reddit.com/user/<%= x.data.author %>" class="logo-link" target="_blank"><%= x.data.author %></a></h6>
                   <p class="post-title"><%= x.data.title %></p>
-                  <% if(x.data.selftext){ %>
-                    <p class="mt-2"><%- marked(x.data.selftext) %></p>
+                  <% if(x.data.selftext.length){ %>
+                    <% if(!x.data.selftext == undefined || null){ %>
+                      <p class="mt-2"><%- marked(x.data.selftext) %></p>  
+                    <% }else{ %>
+                      <p>
+                        <%= x.data.selftext %>
+                      </p>
+                    <% } %>
                   <% } %>
               <% if(x.data.url){ %>
                 <% if(x.data.url.endsWith("jpg") || x.data.url.endsWith("jpeg") || x.data.url.endsWith("png")){ %>
@@ -87,9 +93,16 @@
                     <div class="card mt-3">
                       <div class="card-body">
                         <p>
+                          <% if(!x.data.body == undefined || null){ %>
                           <p><a href="https://www.reddit.com/user/<%= x.data.author %>" class="link" target="_blank"><%= x.data.author %></a></p>
+                          
                           <%- marked(x.data.body) %>
                         </p>
+                        <% }else{ %>
+                          <p>
+                            <%= x.data.body %>
+                          </p>
+                        <% } %>
                         <p class="mt-3"><i class="fa-solid fa-chevron-up"></i> <%= x.data.ups %></p>
                       </div>
                     </div>
@@ -101,9 +114,15 @@
             <div class="card">
               <div class="card-body">
                 <p class="mb-2"><strong>About Community</strong></p>
+                <% if(!about.data.public_description == undefined || null){ %>
                 <p>
                   <%- marked(about.data.public_description) %>
                 </p>
+                <% }else{ %>
+                  <p>
+                    <%= about.data.public_description %>
+                  </p>
+                <% } %>
                 <div class="row mt-2">
                   <div class="col">
                     <p><strong>Members</strong></p>
@@ -129,7 +148,13 @@
                     <div class="row">
                       <div class="col">
                         <div class="collapse multi-collapse" id="id<%= rule.priority %>">
+                          <% if(!rule.description == undefined || null){ %>
                           <p class="mt-2"><%- marked(rule.description) %></p>
+                          <% }else{ %>
+                            <p>
+                              <%= rule.description %>
+                            </p>
+                          <% } %>
                         </div>
                       </div>
                     </div>
