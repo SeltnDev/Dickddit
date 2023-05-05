@@ -102,7 +102,7 @@ app.get("/r/:sub/top", async (req, res) => {
       let response = await fetch(`https://reddit.com/r/${req.params.sub}/top/.json?limit=${limit}&after=${after}`).then((res) => res.json())
       let about = await fetch(`https://reddit.com/r/${req.params.sub}/about/.json`).then((res) => res.json())
       let rules = await fetch(`https://reddit.com/r/${req.params.sub}/about/rules/.json`).then((res) => res.json())
-      if (rresponse.data.children.length > 0) {
+      if (response.data.children.length > 0) {
         res.render(process.cwd() + "/src/ejs/subreddit.ejs", { response, config: db.fetch("settings"), after, sub: req.params.sub, about, rules, marked })
       } else {
         res.render(process.cwd() + "/src/ejs/404.ejs", { config: db.fetch("settings") })
@@ -119,7 +119,9 @@ app.get("/r/:sub/comments/:id/:post", async (req, res) => {
         let about = await fetch(`https://reddit.com/r/${req.params.sub}/about/.json`).then((res) => res.json())
         let about_post = await fetch(`https://reddit.com/r/${req.params.sub}/comments/${req.params.id}/${req.params.post}/.json`).then((res) => res.json())
         let rules = await fetch(`https://reddit.com/r/${req.params.sub}/about/rules/.json`).then((res) => res.json())
-        console.log(response)
+        response[0].data.children.forEach(element => {
+          console.log(element.data.all_awardings)
+        });
         if(response[1].data.children.length > 0){
             res.render(process.cwd() + "/src/ejs/post.ejs", { response, config: db.fetch("settings"), about, rules, about_post, marked })
         }else{
