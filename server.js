@@ -47,7 +47,7 @@ app.get("/search", async (req, res) => {
         }else{
             let response = await fetch(`https://reddit.com/search/.json?&q=${req.query.q}`).then((res) => res.json())
             if(response.data.children.length > 0){
-                res.render(process.cwd() + "/src/ejs/search.ejs", { response, config: db.fetch("settings") })
+                res.render(process.cwd() + "/src/ejs/search.ejs", { q: req.query.q, response, config: db.fetch("settings") })
             }else{
                 res.render(process.cwd() + "/src/ejs/404.ejs", { config: db.fetch("settings") })
             }
@@ -119,7 +119,8 @@ app.get("/r/:sub/comments/:id/:post", async (req, res) => {
         let about = await fetch(`https://reddit.com/r/${req.params.sub}/about/.json`).then((res) => res.json())
         let about_post = await fetch(`https://reddit.com/r/${req.params.sub}/comments/${req.params.id}/${req.params.post}/.json`).then((res) => res.json())
         let rules = await fetch(`https://reddit.com/r/${req.params.sub}/about/rules/.json`).then((res) => res.json())
-        if(response[1] > 0){
+        console.log(response)
+        if(response[1].data.children.length > 0){
             res.render(process.cwd() + "/src/ejs/post.ejs", { response, config: db.fetch("settings"), about, rules, about_post, marked })
         }else{
             res.render(process.cwd() + "/src/ejs/404.ejs", { config: db.fetch("settings") })
