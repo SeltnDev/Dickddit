@@ -9,6 +9,8 @@ const db = new database.JsonDatabase({ databasePath: "./config.json" })
 
 const bp = require("body-parser")
 
+let PORT = 3000
+
 app.use(bp.urlencoded({ extended: false }))
 
 app.use(bp.json())
@@ -43,11 +45,14 @@ app.get("/top", async (req, res) => {
 app.get("/search", async (req, res) => {
     if(req.query.q){
         if(req.query.q.startsWith("r/") || req.query.q.startsWith("R/")){
+            if(req.query.q.split(" ")[1]){
+              res.redirect(`${req.query.q.split(" ")[0]}?q=${req.query.q.split(" ")[1]}`)
+            }
             res.redirect(req.query.q)
         }else{
             let response = await fetch(`https://reddit.com/search/.json?&q=${req.query.q}`).then((res) => res.json())
             if(response.data.children.length > 0){
-                res.render(process.cwd() + "/src/ejs/search.ejs", { q: req.query.q, response, config: db.fetch("settings") })
+                res.render(process.cwd() + "/src/ejs/search.ejs", { q: req.query.q, response, config: db.fetch("settings"), q: req.query.q })
             }else{
                 res.render(process.cwd() + "/src/ejs/404.ejs", { config: db.fetch("settings") })
             }
@@ -60,15 +65,30 @@ app.get("/search", async (req, res) => {
 //Subreddit
 app.get("/r/:sub", async (req, res) => {
     if (req.params.sub) {
-      let limit = 8
-      let after = req.query.after || ""
-      let response = await fetch(`https://reddit.com/r/${req.params.sub}/.json?limit=${limit}&after=${after}`).then((res) => res.json())
       let about = await fetch(`https://reddit.com/r/${req.params.sub}/about/.json`).then((res) => res.json())
       let rules = await fetch(`https://reddit.com/r/${req.params.sub}/about/rules/.json`).then((res) => res.json())
-      if (response.data) {
-        res.render(process.cwd() + "/src/ejs/subreddit.ejs", { response, config: db.fetch("settings"), after, sub: req.params.sub, about, rules, marked })
-      } else {
-        res.render(process.cwd() + "/src/ejs/404.ejs", { config: db.fetch("settings") })
+      if(!req.query.q){
+        let limit = 8
+        let after = req.query.after || ""
+        let response = await fetch(`https://reddit.com/r/${req.params.sub}/.json?limit=${limit}&after=${after}`).then((res) => res.json())
+        if (response.data) {
+          res.render(process.cwd() + "/src/ejs/subreddit.ejs", { response, config: db.fetch("settings"), after, sub: req.params.sub, about, rules, marked, q: req.query.q })
+        } else {
+          res.render(process.cwd() + "/src/ejs/404.ejs", { config: db.fetch("settings") })
+        }
+      }else{
+        if(req.query.q.length > 0){
+          let limit = 8
+          let after = req.query.after || ""
+          let response = await fetch(`https://reddit.com/r/${req.params.sub}/search/.json?q=$${req.query.q}&limit=${limit}&after=${after}`).then((res) => res.json())
+          if (response.data) {
+            res.render(process.cwd() + "/src/ejs/subreddit.ejs", { response, config: db.fetch("settings"), after, sub: req.params.sub, about, rules, marked, q: req.query.q })
+          } else {
+            res.render(process.cwd() + "/src/ejs/404.ejs", { config: db.fetch("settings") })
+          }
+        }else{
+          res.redirect(`/r/${req.params.sub}`)
+        }
       }
     } else {
       res.redirect("/")
@@ -164,6 +184,6 @@ app.post("/settings", (req, res) => {
   }
 })
 
-app.listen(3000, () => {
-    console.log("Server Active")
+app.listen(PORT, () => {
+    console.log(`Server is active and running on port ${PORT}`)
 })
