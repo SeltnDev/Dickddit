@@ -10,7 +10,7 @@
     <div class="container-fluid">
       <div class="row justify-content-center">
         <div class="col logo">
-          <a href="/" class="logo-link"><%= title %></a> - <a href="/<%= about.data.display_name_prefixed %>" class="logo-link"><%= about.data.display_name_prefixed %></a>  
+          <a href="/" class="logo-link"><%= config.title %></a> - <a href="/<%= about.data.display_name_prefixed %>" class="logo-link"><%= about.data.display_name_prefixed %></a>  
         </div>
         <%- include("./parts/header.ejs") %>
         <% about_post[0].data.children.forEach(x => { %>
