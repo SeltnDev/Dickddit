@@ -1,5 +1,5 @@
 # Dickddit
-Dickddit is an open source software that uses a reddit api written in NodeJS. With Dickddit you can safely surf reddit without your data being saved by others (I'm talking about you on reddit).
+Dickddit is an open source software that uses a reddit api written in NodeJS. With Dickddit you can safely surf reddit without your data being saved by others (I'm talking about you reddit).
 
 ## **Technologies used by Dickddit software**
 
