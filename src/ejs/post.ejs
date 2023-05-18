@@ -85,20 +85,27 @@
           <div class="comments mt-3">
             <h6>Comments - <%= response[1].data.children.length %></h6>
             <hr>
-            // Up to 35 comments can be listed.
+            <span style="color: #2add66;">// Up to 35 comments can be listed.</span>
               <% if(response[1].data.children.length == 0){ %>
                 <p>There are no comments.</p>
               <% }else{ %>
                 <% response[1].data.children.slice(0, 35).forEach(x => { %>
                     <div class="card mt-3">
                       <div class="card-body">
-                        <p>
                           <% if(!x.data.body == undefined || null){ %>
-                          <p><a href="https://www.reddit.com/user/<%= x.data.author %>" class="link" target="_blank"><%= x.data.author %></a></p>
-                          
-                          <%- marked(x.data.body) %>
-                        </p>
+                          <% if(response[0].data.children[0].data.author === x.data.author){ %>
+                            <p><a href="https://www.reddit.com/user/<%= x.data.author %>" class="link" target="_blank"><%= x.data.author %></a> <span class="op-badge">OP</span></p>  
+                          <% }else{ %>
+                            <p><a href="https://www.reddit.com/user/<%= x.data.author %>" class="link" target="_blank"><%= x.data.author %></a></p>
+                          <% } %><p>
+                            <%- marked(x.data.body) %>
+                          </p>
                         <% }else{ %>
+                          <% if(response[0].data.children[0].data.author === x.data.author){ %>
+                            <p><a href="https://www.reddit.com/user/<%= x.data.author %>" class="link" target="_blank"><%= x.data.author %></a> <span class="op-badge">OP</span></p>  
+                          <% }else{ %>
+                            <p><a href="https://www.reddit.com/user/<%= x.data.author %>" class="link" target="_blank"><%= x.data.author %></a></p>
+                          <% } %>
                           <p>
                             <%= x.data.body %>
                           </p>

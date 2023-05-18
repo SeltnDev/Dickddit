@@ -21,7 +21,9 @@
           <a href="/" class="logo-link"><%= config.title %></a> - <a href="/<%= about.data.display_name_prefixed %>" class="logo-link"><%= about.data.display_name_prefixed %></a>  
         </div>
         <div class="col-lg-6">
-          <input type="text" class="search" placeholder="Secretly search for a subreddit or post..." name="q" value="<%= about.data.display_name_prefixed %> <%= q %>">
+          <form action="/search" method="get">
+            <input type="text" class="search" placeholder="Secretly search for a subreddit or post..." name="q" value="<%= about.data.display_name_prefixed %> <%= q %>">
+          </form>
         </div>
         <div class="col text-end">
           <a href="https://reddit.com<%= about.data.url %>" class="logo-link icons" target="_blank"><i class="fa-brands fa-reddit"></i></a>

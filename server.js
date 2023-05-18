@@ -44,19 +44,25 @@ app.get("/top", async (req, res) => {
 //Search posts on reddit
 app.get("/search", async (req, res) => {
     if(req.query.q){
-        if(req.query.q.startsWith("r/") || req.query.q.startsWith("R/")){
-            if(req.query.q.split(" ")[1]){
-              res.redirect(`${req.query.q.split(" ")[0]}?q=${req.query.q.split(" ")[1]}`)
-            }
-            res.redirect(req.query.q)
+      if(req.query.q.startsWith("r/") || req.query.q.startsWith("R/")){
+        if(!req.query.q.includes(" ")){
+          res.redirect(req.query.q)
         }else{
-            let response = await fetch(`https://reddit.com/search/.json?&q=${req.query.q}`).then((res) => res.json())
-            if(response.data.children.length > 0){
-                res.render(process.cwd() + "/src/ejs/search.ejs", { q: req.query.q, response, config: db.fetch("settings"), q: req.query.q })
-            }else{
-                res.render(process.cwd() + "/src/ejs/404.ejs", { config: db.fetch("settings") })
-            }
+          let response = await fetch(`https://reddit.com/search/.json?&q=${req.query.q}`).then((res) => res.json())
+          if(response.data.children.length > 0){
+              res.render(process.cwd() + "/src/ejs/search.ejs", { q: req.query.q, response, config: db.fetch("settings"), q: req.query.q })
+          }else{
+              res.render(process.cwd() + "/src/ejs/404.ejs", { config: db.fetch("settings") })
+          }
         }
+      }else{
+        let response = await fetch(`https://reddit.com/search/.json?&q=${req.query.q}`).then((res) => res.json())
+        if(response.data.children.length > 0){
+            res.render(process.cwd() + "/src/ejs/search.ejs", { q: req.query.q, response, config: db.fetch("settings"), q: req.query.q })
+        }else{
+            res.render(process.cwd() + "/src/ejs/404.ejs", { config: db.fetch("settings") })
+        }
+      }
     }else{
         res.redirect("/")
     }
@@ -64,33 +70,18 @@ app.get("/search", async (req, res) => {
 
 //Subreddit
 app.get("/r/:sub", async (req, res) => {
-    if (req.params.sub) {
+    if(req.params.sub){
+      let limit = 8
+      let after = req.query.after || ""
       let about = await fetch(`https://reddit.com/r/${req.params.sub}/about/.json`).then((res) => res.json())
       let rules = await fetch(`https://reddit.com/r/${req.params.sub}/about/rules/.json`).then((res) => res.json())
-      if(!req.query.q){
-        let limit = 8
-        let after = req.query.after || ""
-        let response = await fetch(`https://reddit.com/r/${req.params.sub}/.json?limit=${limit}&after=${after}`).then((res) => res.json())
-        if (response.data) {
-          res.render(process.cwd() + "/src/ejs/subreddit.ejs", { response, config: db.fetch("settings"), after, sub: req.params.sub, about, rules, marked, q: req.query.q })
-        } else {
-          res.render(process.cwd() + "/src/ejs/404.ejs", { config: db.fetch("settings") })
-        }
+      let response = await fetch(`https://reddit.com/r/${req.params.sub}/.json?limit=${limit}&after=${after}`).then((res) => res.json())
+      if(response.data){
+        res.render(process.cwd() + "/src/ejs/subreddit.ejs", { response, config: db.fetch("settings"), after, sub: req.params.sub, about, rules, marked, q: req.query.q })
       }else{
-        if(req.query.q.length > 0){
-          let limit = 8
-          let after = req.query.after || ""
-          let response = await fetch(`https://reddit.com/r/${req.params.sub}/search/.json?q=$${req.query.q}&limit=${limit}&after=${after}`).then((res) => res.json())
-          if (response.data) {
-            res.render(process.cwd() + "/src/ejs/subreddit.ejs", { response, config: db.fetch("settings"), after, sub: req.params.sub, about, rules, marked, q: req.query.q })
-          } else {
-            res.render(process.cwd() + "/src/ejs/404.ejs", { config: db.fetch("settings") })
-          }
-        }else{
-          res.redirect(`/r/${req.params.sub}`)
-        }
+        res.render(process.cwd() + "/src/ejs/404.ejs", { config: db.fetch("settings") })
       }
-    } else {
+    }else{
       res.redirect("/")
     }
 })
@@ -139,9 +130,6 @@ app.get("/r/:sub/comments/:id/:post", async (req, res) => {
         let about = await fetch(`https://reddit.com/r/${req.params.sub}/about/.json`).then((res) => res.json())
         let about_post = await fetch(`https://reddit.com/r/${req.params.sub}/comments/${req.params.id}/${req.params.post}/.json`).then((res) => res.json())
         let rules = await fetch(`https://reddit.com/r/${req.params.sub}/about/rules/.json`).then((res) => res.json())
-        response[0].data.children.forEach(element => {
-          console.log(element.data.all_awardings)
-        });
         if(response[1].data.children.length > 0){
             res.render(process.cwd() + "/src/ejs/post.ejs", { response, config: db.fetch("settings"), about, rules, about_post, marked })
         }else{
@@ -181,6 +169,25 @@ app.post("/settings", (req, res) => {
     }
   }else{
     res.redirect("/settings?error")
+  }
+})
+
+app.get("/user/:username", async(req, res) => {
+  if(req.params.username){
+    let limit = 8
+    let after = req.query.after || ""
+    let about = await fetch(`https://www.reddit.com/user/${req.params.username}/about.json`).then((res) => res.json())
+    let response = await fetch(`https://www.reddit.com/user/${req.params.username}.json?limit=${limit}&after=${after}`).then((res) => res.json())
+    response.data.children.forEach(element => {
+      console.log(element)
+    });
+    if(about.data){
+      res.render(process.cwd() + "/src/ejs/user.ejs", { about, config: db.fetch("settings"), marked, after, about, response })
+    }else{
+      res.render(process.cwd() + "/src/ejs/404.ejs", { config: db.fetch("settings") })
+    }
+  }else{
+    res.redirect("/")
   }
 })
 

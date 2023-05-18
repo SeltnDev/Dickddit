@@ -1,6 +1,10 @@
+:root{
+    --background: #000000;
+    --border: #141414;
+}
 body{
-    background-color: #1e1e2b;
-    color: #b6b6b6;
+    background-color: var(--background);
+    color: #cacaca;
     font: 100;
     margin-bottom: 25px;
 }
@@ -13,16 +17,38 @@ body{
     padding: 10px;
     border-radius: 5px;
     border: none;
-    background-color: #2e2e3b;
+    background-color: transparent;
     color: #b6b6b6;
+    border: 1px solid var(--border);
+    transition: 0.2s;
+}
+.search:hover{
+    outline: none;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: var(--border);
+    color: #b6b6b6;
+    border: 1px solid var(--border);
+}
+.search:focus{
+    outline: none;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: var(--border);
+    color: #b6b6b6;
+    border: 1px solid var(--border);
 }
 .title{
     font-size: 50px;
 }
 .header{
-    background-color: #1e1e2b;
+    background-color: var(--background);
     padding: 10px;
-    border-bottom: 1px solid #2e2e3b;
+    border-bottom: 1px solid var(--border);
 }
 .logo{
     font-size: 17px;
@@ -62,8 +88,13 @@ p{
     width: 100%;
 }
 .card{
-    border: none;
-    background-color: #2e2e3b;
+    background-color: var(--background);
+    border: 1px solid var(--border);
+    transition: 0.2s;
+}
+.card:hover{
+    background-color: var(--border);
+    border: 1px solid var(--border);
 }
 .img{
     width: 100%;
@@ -79,28 +110,29 @@ p{
     font-size: 30px;
 }
 .button{
-    background-color: #2e2e3b;
+    background-color: var(--background);
     color: #b6b6b6;
     text-decoration-line: none;
     padding: 10px;
     border-radius: 5px;
-    border: none;
+    border: 1px solid var(--border);
+    transition: 0.2s;
 }
 .button:hover{
-    background-color: #2e2e3b;
+    background-color: var(--border);
     color: #b6b6b6;
     text-decoration-line: none;
     padding: 10px;
     border-radius: 5px;
-    border: none;
+    border: 1px solid var(--border);
 }
 .button:focus{
-    background-color: #2e2e3b;
+    background-color: var(--border);
     color: #b6b6b6;
     text-decoration-line: none;
     padding: 10px;
     border-radius: 5px;
-    border: none;
+    border: 1px solid var(--border);
 }
 table{
     width: 100%;
@@ -127,7 +159,7 @@ td{
 }
 .subreddit{
     margin-top: 65px;
-    background-color: #2e2e3b;
+    background-color: #0e0e0e;
 }
 .subreddit-banner{
     width: 100%;
@@ -137,4 +169,16 @@ td{
     width: 80px;
     border-radius: 1000px;
     border: 5px solid #b6b6b6;
+}
+.op-badge{
+    background-color: #206797;
+    font-size: 12px;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-radius: 3px;
+}
+.user-img{
+    border: 3px solid var(--border);
+    border-radius: 1000px;
+    background-color: var(--border);
 }
